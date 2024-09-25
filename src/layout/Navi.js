@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { Link } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import { DataContext } from '../App';
 
 const Navi = () => {
@@ -11,12 +11,21 @@ const Navi = () => {
 
 	const categories = [...new Set(data.map((item) => item.RCP_WAY2))];
 
+	const activeStyle = {
+		color:'red'
+	};
+
 	return (
 		<nav className='nav'>
 			<ul>
+				<li><NavLink to='/' style={({isActive})=> (isActive ? activeStyle : undefined)}>Home</NavLink></li>
 				{
 					categories.map((category) => (
-						<li key={category}><Link to={`category/${category}`}>{category}</Link></li>
+						<li key={category}>
+							<NavLink to={`category/${category}`} style={({isActive})=> (isActive ? activeStyle : undefined)}>
+								{category}
+							</NavLink>
+						</li>
 					))
 				}
 			</ul>

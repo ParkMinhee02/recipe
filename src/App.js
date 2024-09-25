@@ -10,43 +10,13 @@ function App({children}) {
       try{
          const {data} = await axios.get('http://openapi.foodsafetykorea.go.kr/api/d1d505e5857e48eb9a21/COOKRCP01/json/1/100');
          const {COOKRCP01: {row}} =data;
-         const initData=row.map(({RCP_SEQ,RCP_NM,RCP_WAY2,RCP_PAT2,INFO_WGT,INFO_ENG,INFO_CAR,INFO_PRO,INFO_FAT,INFO_NA,HASH_TAG,ATT_FILE_NO_MK,ATT_FILE_NO_MAIN,RCP_PARTS_DTLS,MANUAL01,MANUAL02,MANUAL03,MANUAL04,MANUAL05,MANUAL06,MANUAL07,MANUAL08,MANUAL09,MANUAL10,MANUAL_IMG01,MANUAL_IMG02,MANUAL_IMG03,MANUAL_IMG04,MANUAL_IMG05,MANUAL_IMG06,MANUAL_IMG07,MANUAL_IMG08,MANUAL_IMG09,MANUAL_IMG10,RCP_NA_TIP})=>({
-            RCP_SEQ, 
-            RCP_NM, 
-            RCP_WAY2, 
-            RCP_PAT2,
-            INFO_WGT, 
-            INFO_ENG, 
-            INFO_CAR, 
-            INFO_PRO, 
-            INFO_FAT, 
-            INFO_NA,
-            HASH_TAG, 
-            ATT_FILE_NO_MK, 
-            ATT_FILE_NO_MAIN, 
-            RCP_PARTS_DTLS,
-            MANUAL01, 
-            MANUAL02, 
-            MANUAL03, 
-            MANUAL04, 
-            MANUAL05, 
-            MANUAL06, 
-            MANUAL07, 
-            MANUAL08, 
-            MANUAL09, 
-            MANUAL10,
-            MANUAL_IMG01, 
-            MANUAL_IMG02, 
-            MANUAL_IMG03, 
-            MANUAL_IMG04,
-            MANUAL_IMG05, 
-            MANUAL_IMG06, 
-            MANUAL_IMG07, 
-            MANUAL_IMG08, 
-            MANUAL_IMG09, 
-            MANUAL_IMG10,
-            RCP_NA_TIP,
-         }));
+         const initData=row.map((item)=>({
+			...item,
+			instructions: Array.from({length: 20}, (_, i) => ({
+				manual: item[`MANUAL${String(i+1).padStart(2, '0')}`],
+				manualImg: item[`MANUAL_IMG${String(i+1).padStart(2, '0')}`]
+			})).filter((inst) => inst.MANUAL)
+		 }));
          setLoading(false);
          setData(initData)
          console.log(data)
